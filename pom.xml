@@ -10,4 +10,19 @@
         <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>com.mycompany.proyectosupplestock.ProyectoSuppleStock</exec.mainClass>
     </properties>
+    <dependencies>
+        <!-- MariaDB Connector -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+        <!-- dotenv-java -->
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>dotenv-java</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+    </dependencies>
 </project>
