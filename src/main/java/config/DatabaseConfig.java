@@ -17,6 +17,7 @@ public class DatabaseConfig {
 
     private static DatabaseConfig instance;
     private Connection connection;
+    
     private final String URL;
     private final String USER;
     private final String PASSWORD;
