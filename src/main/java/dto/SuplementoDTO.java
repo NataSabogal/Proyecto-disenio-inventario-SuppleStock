@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author nataliasabogalrada
  */
 public class SuplementoDTO {
-    
+
     private int id;
     private String nombre;
     private String descripcion;
@@ -25,7 +25,7 @@ public class SuplementoDTO {
     }
 
     public SuplementoDTO(int id, String nombre, String descripcion, String tipo, String marca,
-                         double precio, int stock, LocalDate fechaRegistro) {
+            double precio, int stock, LocalDate fechaRegistro) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -99,5 +99,5 @@ public class SuplementoDTO {
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
-    
+
 }
