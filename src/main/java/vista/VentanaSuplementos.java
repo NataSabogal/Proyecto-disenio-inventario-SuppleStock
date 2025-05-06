@@ -87,6 +87,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         btnAgregarSuppleStock.setText("Agregar ✔");
+        btnAgregarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarSuppleStockActionPerformed(evt);
+            }
+        });
 
         btnEditarSuppleStock.setText("Editar");
 
@@ -217,6 +222,9 @@ public class VentanaSuplementos extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSuppleStockActionPerformed
+    }//GEN-LAST:event_btnAgregarSuppleStockActionPerformed
 
     /**
      * @param args the command line arguments

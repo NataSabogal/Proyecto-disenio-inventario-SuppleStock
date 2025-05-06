@@ -4,6 +4,8 @@
 
 package com.mycompany.proyectosupplestock;
 
+import vista.VentanaCrearAdmin;
+
 /**
  *
  * @author nataliasabogalrada
@@ -11,7 +13,8 @@ package com.mycompany.proyectosupplestock;
 public class ProyectoSuppleStock {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        
+        VentanaCrearAdmin admin = new VentanaCrearAdmin();
+        admin.setVisible(true);
+        admin.setLocationRelativeTo(null);
     }
 }
