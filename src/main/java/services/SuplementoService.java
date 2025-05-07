@@ -5,6 +5,7 @@
 package services;
 
 import dto.SuplementoDTO;
+import java.util.ArrayList;
 import repository.SuplementoRepository;
 
 /**
@@ -23,8 +24,8 @@ public class SuplementoService {
         return suplementoRepository.guardarSuplemento(suplemento);
     }
 
-    public void listarSuplementos() {
-        suplementoRepository.listarSuplementos();
+    public ArrayList<SuplementoDTO> listarSuplementos() {
+        return suplementoRepository.listarSuplementos();
     }
 
     public SuplementoDTO buscarPorId(int id) {
