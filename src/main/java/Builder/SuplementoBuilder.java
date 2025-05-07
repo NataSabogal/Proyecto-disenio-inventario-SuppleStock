@@ -12,58 +12,55 @@ import java.time.LocalDate;
  * @author nataliasabogalrada
  */
 public class SuplementoBuilder {
-    
-    private int id;
-    private String nombre;
-    private String descripcion;
-    private String tipo;
-    private String marca;
-    private double precio;
-    private int stock;
-    private LocalDate fechaRegistro;
 
-    public SuplementoBuilder setId(int id) {
-        this.id = id;
+    private final SuplementoDTO suplemento;
+
+    public SuplementoBuilder() {
+        suplemento = new SuplementoDTO();
+    }
+
+    public SuplementoBuilder conId(int id) {
+        suplemento.setId(id);
         return this;
     }
 
-    public SuplementoBuilder setNombre(String nombre) {
-        this.nombre = nombre;
+    public SuplementoBuilder conNombre(String nombre) {
+        suplemento.setNombre(nombre);
         return this;
     }
 
-    public SuplementoBuilder setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public SuplementoBuilder conDescripcion(String descripcion) {
+        suplemento.setDescripcion(descripcion);
         return this;
     }
 
-    public SuplementoBuilder setTipo(String tipo) {
-        this.tipo = tipo;
+    public SuplementoBuilder conTipo(String tipo) {
+        suplemento.setTipo(tipo);
         return this;
     }
 
-    public SuplementoBuilder setMarca(String marca) {
-        this.marca = marca;
+    public SuplementoBuilder conMarca(String marca) {
+        suplemento.setMarca(marca);
         return this;
     }
 
-    public SuplementoBuilder setPrecio(double precio) {
-        this.precio = precio;
+    public SuplementoBuilder conPrecio(double precio) {
+        suplemento.setPrecio(precio);
         return this;
     }
 
-    public SuplementoBuilder setStock(int stock) {
-        this.stock = stock;
+    public SuplementoBuilder conStock(int stock) {
+        suplemento.setStock(stock);
         return this;
     }
 
-    public SuplementoBuilder setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
+    public SuplementoBuilder conFechaRegistro(LocalDate fecha) {
+        suplemento.setFechaRegistro(fecha);
         return this;
     }
 
     public SuplementoDTO build() {
-        return new SuplementoDTO(id, nombre, descripcion, tipo, marca, precio, stock, fechaRegistro);
+        return suplemento;
     }
-    
+
 }

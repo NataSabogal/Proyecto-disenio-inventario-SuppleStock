@@ -5,6 +5,7 @@
 package controller;
 
 import dto.SuplementoDTO;
+import java.util.ArrayList;
 import services.SuplementoService;
 
 /**
@@ -12,7 +13,7 @@ import services.SuplementoService;
  * @author nataliasabogalrada
  */
 public class SuplementoController {
-    
+
     private final SuplementoService suplementoService;
 
     public SuplementoController() {
@@ -23,8 +24,8 @@ public class SuplementoController {
         return suplementoService.guardarSuplemento(suplemento);
     }
 
-    public void mostrarTodosLosSuplementos() {
-        suplementoService.listarSuplementos(); 
+    public ArrayList<SuplementoDTO> obtenerListaSuplementos() {
+        return suplementoService.listarSuplementos();
     }
 
     public SuplementoDTO buscarSuplementoPorId(int id) {
@@ -38,6 +39,5 @@ public class SuplementoController {
     public boolean eliminarSuplemento(int id) {
         return suplementoService.eliminarSuplemento(id);
     }
-    
-    
+
 }
