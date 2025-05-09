@@ -4,6 +4,10 @@
  */
 package vista;
 
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import services.AdminService;
+
 /**
  *
  * @author nataliasabogalrada
@@ -48,10 +52,23 @@ public class VentanaLogIn extends javax.swing.JPanel {
         jLabel2.setText("Contraseña:");
 
         btnInciarSesion.setText("Iniciar Sesión");
+        btnInciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInciarSesionActionPerformed(evt);
+            }
+        });
 
         txtCedula.setForeground(new java.awt.Color(204, 204, 204));
         txtCedula.setText("Ingrese su nombre de cédula");
         txtCedula.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtCedulaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCedulaFocusLost(evt);
+            }
+        });
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -60,6 +77,14 @@ public class VentanaLogIn extends javax.swing.JPanel {
         txtContraseña.setForeground(new java.awt.Color(204, 204, 204));
         txtContraseña.setText("********");
         txtContraseña.setBorder(null);
+        txtContraseña.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtContraseñaFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtContraseñaFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -127,6 +152,53 @@ public class VentanaLogIn extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void txtCedulaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusGained
+        if (txtCedula.getText().equals("Ingrese su cédula ")) {
+            txtCedula.setText("");
+            txtCedula.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_txtCedulaFocusGained
+
+    private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
+        if (txtCedula.getText().isEmpty()) {
+            txtCedula.setText("Ingrese su cédula ");
+        }
+         
+    }//GEN-LAST:event_txtCedulaFocusLost
+
+    private void txtContraseñaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusGained
+        if (String.valueOf(txtContraseña.getPassword()).equals("********")) {
+            txtContraseña.setText("");
+            txtContraseña.setForeground(Color.BLACK);
+            txtContraseña.setEchoChar('•');
+        }
+    }//GEN-LAST:event_txtContraseñaFocusGained
+
+    private void txtContraseñaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContraseñaFocusLost
+        if (String.valueOf(txtContraseña.getPassword()).isEmpty()) {
+            txtContraseña.setText("********");
+            txtContraseña.setForeground(Color.GRAY);
+            txtContraseña.setEchoChar((char) 0);
+        }
+    }//GEN-LAST:event_txtContraseñaFocusLost
+
+    private void btnInciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInciarSesionActionPerformed
+        String cedula = txtCedula.getText();
+        String contrasenia = new String(txtContraseña.getPassword());
+
+        AdminService adminService = new AdminService();
+
+        if (adminService.login(cedula, contrasenia)) {
+            VentanaSuplementos suplementos = new VentanaSuplementos();
+            suplementos.setVisible(true);
+            suplementos.setLocationRelativeTo(null);
+            //this.dispose
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Cédula o contraseña incorrecta.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnInciarSesionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

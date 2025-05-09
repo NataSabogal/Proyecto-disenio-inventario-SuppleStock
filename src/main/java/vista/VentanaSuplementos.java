@@ -4,6 +4,15 @@
  */
 package vista;
 
+import Builder.SuplementoBuilder;
+import controller.SuplementoController;
+import dto.SuplementoDTO;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bran-
@@ -13,8 +22,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     /**
      * Creates new form VentanaSuplementos
      */
+    private final SuplementoController suplementoController;
+
     public VentanaSuplementos() {
         initComponents();
+        suplementoController = new SuplementoController();
     }
 
     /**
@@ -35,7 +47,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        fecha = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         txtIDSuplementos = new javax.swing.JTextField();
         txtNombreSuplementos = new javax.swing.JTextField();
@@ -45,7 +57,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         txtPrecioSuplementos = new javax.swing.JTextField();
         txtStockSuplementos = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaSuplementos = new javax.swing.JTable();
         btnAgregarSuppleStock = new javax.swing.JButton();
         btnEditarSuppleStock = new javax.swing.JButton();
         btnBuscarSuppleStock = new javax.swing.JButton();
@@ -73,7 +85,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
 
         jLabel8.setText("Fecha");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaSuplementos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -84,18 +96,18 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaSuplementos);
 
         btnAgregarSuppleStock.setText("Agregar ✔");
-        btnAgregarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarSuppleStockActionPerformed(evt);
-            }
-        });
 
         btnEditarSuppleStock.setText("Editar ⚙️");
 
         btnBuscarSuppleStock.setText("Buscar 🔎");
+        btnBuscarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarSuppleStockActionPerformed(evt);
+            }
+        });
 
         btnAtrasSuppleStock.setText("Atras 🔙 ");
 
@@ -132,7 +144,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                                        .addComponent(fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                                                         .addComponent(txtIDSuplementos)
                                                         .addComponent(txtStockSuplementos))
                                                     .addComponent(txtNombreSuplementos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -191,7 +203,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -223,9 +235,43 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAgregarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSuppleStockActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregarSuppleStockActionPerformed
+    private void btnBuscarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarSuppleStockActionPerformed
+        try {
+            int id = Integer.parseInt(txtIDSuplementos.getText());
+
+            SuplementoDTO suplemento = suplementoController.buscarSuplementoPorId(id);
+
+            if (suplemento != null) {
+                txtNombreSuplementos.setText(suplemento.getNombre());
+                txtDescripcionSuplementos.setText(suplemento.getDescripcion());
+                txtTipoSuplementos.setText(suplemento.getTipo());
+                txtMarcaSuplementos.setText(suplemento.getMarca());
+                txtPrecioSuplementos.setText(String.valueOf(suplemento.getPrecio()));
+                txtStockSuplementos.setText(String.valueOf(suplemento.getStock()));
+
+                java.util.Date fechaS = java.sql.Date.valueOf(suplemento.getFechaRegistro());
+                fecha.setDate(fechaS);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró un suplemento con ese ID.");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido: " + e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnBuscarSuppleStockActionPerformed
+
+    public void limpiarCampos() {
+        txtDescripcionSuplementos.setText("");
+        txtIDSuplementos.setText("");
+        txtMarcaSuplementos.setText("");
+        txtNombreSuplementos.setText("");
+        txtPrecioSuplementos.setText("");
+        txtStockSuplementos.setText("");
+        txtTipoSuplementos.setText("");
+        fecha.setDate(null);
+    }
 
     /**
      * @param args the command line arguments
@@ -268,8 +314,8 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscarSuppleStock;
     private javax.swing.JButton btnEditarSuppleStock;
     private javax.swing.JButton btnEliminarSuppleStock;
+    private com.toedter.calendar.JDateChooser fecha;
     private com.toedter.calendar.JCalendar jCalendar1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -280,7 +326,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaSuplementos;
     private javax.swing.JTextField txtDescripcionSuplementos;
     private javax.swing.JTextField txtIDSuplementos;
     private javax.swing.JTextField txtMarcaSuplementos;

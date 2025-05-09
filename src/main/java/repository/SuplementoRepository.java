@@ -4,6 +4,7 @@
  */
 package repository;
 
+import Builder.SuplementoBuilder;
 import config.DatabaseConfig;
 import dto.SuplementoDTO;
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -42,26 +44,32 @@ public class SuplementoRepository {
         }
     }
 
-    public void listarSuplementos() {
+    public ArrayList<SuplementoDTO> listarSuplementos() {
+        ArrayList<SuplementoDTO> lista = new ArrayList<>();
         String sql = "SELECT * FROM suplementos";
 
         try (Connection conn = DatabaseConfig.getInstance().getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                System.out.println("ID: " + rs.getInt("id"));
-                System.out.println("Nombre: " + rs.getString("nombre"));
-                System.out.println("Descripción: " + rs.getString("descripcion"));
-                System.out.println("Tipo: " + rs.getString("tipo"));
-                System.out.println("Marca: " + rs.getString("marca"));
-                System.out.println("Precio: $" + rs.getDouble("precio"));
-                System.out.println("Stock: " + rs.getInt("stock"));
-                System.out.println("Fecha de registro: " + rs.getDate("fecha_registro"));
-                System.out.println("---------------");
+                SuplementoDTO suplemento = new SuplementoBuilder()
+                        .conId(rs.getInt("id"))
+                        .conNombre(rs.getString("nombre"))
+                        .conDescripcion(rs.getString("descripcion"))
+                        .conTipo(rs.getString("tipo"))
+                        .conMarca(rs.getString("marca"))
+                        .conPrecio(rs.getDouble("precio"))
+                        .conStock(rs.getInt("stock"))
+                        .conFechaRegistro(rs.getDate("fecha_registro").toLocalDate())
+                        .build();
+
+                lista.add(suplemento);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return lista;
     }
 
     public SuplementoDTO buscarPorId(int id) {
