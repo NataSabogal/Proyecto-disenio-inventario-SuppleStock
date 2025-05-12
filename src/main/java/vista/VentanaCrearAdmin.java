@@ -135,7 +135,7 @@ public class VentanaCrearAdmin extends javax.swing.JFrame {
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         String nombre = txtNombre.getText();
         String cedula = txtCedula.getText();
-        String password = new String(txtContra.getText());
+        String password = txtContra.getText();
 
         AdminService adminService = new AdminService();
 
@@ -149,6 +149,7 @@ public class VentanaCrearAdmin extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         VentanaLogIn log = new VentanaLogIn();
         log.setVisible(true);
+        log.setLocationRelativeTo(null);
         this.dispose();
     }//GEN-LAST:event_btnLoginActionPerformed
 

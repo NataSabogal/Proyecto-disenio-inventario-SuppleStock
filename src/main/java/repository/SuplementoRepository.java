@@ -138,4 +138,32 @@ public class SuplementoRepository {
             return false;
         }
     }
+
+    public ArrayList<SuplementoDTO> obtenerTodos() {
+        ArrayList<SuplementoDTO> lista = new ArrayList<>();
+
+        String sql = "SELECT * FROM suplementos";
+
+        try (Connection conn = DatabaseConfig.getInstance().getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                SuplementoDTO sup = new SuplementoDTO();
+                sup.setId(rs.getInt("id"));
+                sup.setNombre(rs.getString("nombre"));
+                sup.setDescripcion(rs.getString("descripcion"));
+                sup.setTipo(rs.getString("tipo"));
+                sup.setMarca(rs.getString("marca"));
+                sup.setPrecio(rs.getDouble("precio"));
+                sup.setStock(rs.getInt("stock"));
+                sup.setFechaRegistro(rs.getDate("fecha_registro").toLocalDate());
+
+                lista.add(sup);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
 }
