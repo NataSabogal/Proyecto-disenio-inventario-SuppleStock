@@ -40,4 +40,7 @@ public class SuplementoController {
         return suplementoService.eliminarSuplemento(id);
     }
 
+    public ArrayList<SuplementoDTO> obtenerTodos() {
+        return suplementoService.obtenerTodos();
+    }
 }

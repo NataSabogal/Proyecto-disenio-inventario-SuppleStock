@@ -39,4 +39,8 @@ public class SuplementoService {
     public boolean eliminarSuplemento(int id) {
         return suplementoRepository.eliminarSuplemento(id);
     }
+
+    public ArrayList<SuplementoDTO> obtenerTodos() {
+        return suplementoRepository.obtenerTodos();
+    }
 }
