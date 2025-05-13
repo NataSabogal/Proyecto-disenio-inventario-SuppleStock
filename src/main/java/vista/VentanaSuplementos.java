@@ -101,6 +101,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         btnAgregarSuppleStock.setText("Agregar ✔");
 
         btnEditarSuppleStock.setText("Editar ⚙️");
+        btnEditarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarSuppleStockActionPerformed(evt);
+            }
+        });
 
         btnBuscarSuppleStock.setText("Buscar 🔎");
         btnBuscarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
@@ -262,6 +267,72 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarSuppleStockActionPerformed
 
+
+    private void btnVerPromocionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerPromocionActionPerformed
+        mostrarPromocionDeSuplementoSeleccionado();
+    }//GEN-LAST:event_btnVerPromocionActionPerformed
+
+    private void btnEliminarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSuppleStockActionPerformed
+        try {
+            int id = Integer.parseInt(txtIDSuplementos.getText());
+
+            int opcion = JOptionPane.showConfirmDialog(this,
+                    "¿Estás segura de eliminar el suplemento con ID " + id + "?",
+                    "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                boolean eliminado = suplementoController.eliminarSuplemento(id);
+
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Suplemento eliminado correctamente.");
+                    limpiarCampos();
+                    actualizarTablaSuplementos();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontró el suplemento o no se pudo eliminar.");
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "ID inválido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnEliminarSuppleStockActionPerformed
+
+    private void btnEditarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarSuppleStockActionPerformed
+        try {
+            int id = Integer.parseInt(txtIDSuplementos.getText()); // Asegúrate de tener este campo visible o editable
+
+            SuplementoDTO suplementoActualizado = new SuplementoBuilder()
+                    .conId(id)
+                    .conNombre(txtNombreSuplementos.getText())
+                    .conDescripcion(txtDescripcionSuplementos.getText())
+                    .conTipo(txtTipoSuplementos.getText())
+                    .conMarca(txtMarcaSuplementos.getText())
+                    .conPrecio(Double.parseDouble(txtPrecioSuplementos.getText()))
+                    .conStock(Integer.parseInt(txtStockSuplementos.getText()))
+                    .conFechaRegistro(((java.util.Date) fecha.getDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                    .build();
+
+            boolean actualizado = suplementoController.actualizarSuplemento(suplementoActualizado);
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(this, "Suplemento actualizado correctamente.");
+                limpiarCampos();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo actualizar el suplemento.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnEditarSuppleStockActionPerformed
+
+
     public void limpiarCampos() {
         txtDescripcionSuplementos.setText("");
         txtIDSuplementos.setText("");
@@ -306,6 +377,62 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 new VentanaSuplementos().setVisible(true);
             }
         });
+    }
+
+
+    private void mostrarPromocionDeSuplementoSeleccionado() {
+        try {
+            int fila = tablaSuplementos.getSelectedRow();
+            if (fila < 0) {
+                JOptionPane.showMessageDialog(this, "Selecciona un suplemento primero", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            SuplementoDTO suplemento = new SuplementoDTO();
+            suplemento.setId(Integer.parseInt(tablaSuplementos.getValueAt(fila, 0).toString()));
+            suplemento.setNombre(tablaSuplementos.getValueAt(fila, 1).toString());
+            suplemento.setTipo(tablaSuplementos.getValueAt(fila, 3).toString());
+            suplemento.setMarca(tablaSuplementos.getValueAt(fila, 4).toString());
+            suplemento.setPrecio(Double.parseDouble(tablaSuplementos.getValueAt(fila, 5).toString()));
+            suplemento.setStock(Integer.parseInt(tablaSuplementos.getValueAt(fila, 6).toString()));
+
+            Paquete paquete = new PaqueteController().generarPaqueteDesdeSuplemento(suplemento);
+
+            txtDescipc.setText(paquete.getDescripcion());
+            txtPrecioFinal.setText(String.format("$%.2f", paquete.getPrecio()));
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al mostrar promoción: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void actualizarTablaSuplementos() {
+        try {
+            DefaultTableModel model = (DefaultTableModel) tablaSuplementos.getModel();
+            model.setRowCount(0);
+
+            ArrayList<SuplementoDTO> lista = suplementoController.obtenerTodos();
+
+            for (SuplementoDTO sup : lista) {
+                model.addRow(new Object[]{
+                    sup.getId(),
+                    sup.getNombre(),
+                    sup.getDescripcion(),
+                    sup.getTipo(),
+                    sup.getMarca(),
+                    sup.getPrecio(),
+                    sup.getStock(),
+                    sup.getFechaRegistro()
+                });
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al cargar los suplementos: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
