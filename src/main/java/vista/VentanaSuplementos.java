@@ -101,13 +101,13 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         jLabel8.setText("Fecha");
 
         btnAgregarSuppleStock.setText("Agregar ✔");
-        btnAgregarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+
+        btnEditarSuppleStock.setText("Editar ⚙️");
+        btnEditarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarSuppleStockActionPerformed(evt);
+                btnEditarSuppleStockActionPerformed(evt);
             }
         });
-
-        btnEditarSuppleStock.setText("Editar");
 
         btnBuscarSuppleStock.setText("Buscar 🔎");
         btnBuscarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
@@ -427,6 +427,38 @@ public class VentanaSuplementos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnEliminarSuppleStockActionPerformed
 
+    private void btnEditarSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarSuppleStockActionPerformed
+        try {
+            int id = Integer.parseInt(txtIDSuplementos.getText()); // Asegúrate de tener este campo visible o editable
+
+            SuplementoDTO suplementoActualizado = new SuplementoBuilder()
+                    .conId(id)
+                    .conNombre(txtNombreSuplementos.getText())
+                    .conDescripcion(txtDescripcionSuplementos.getText())
+                    .conTipo(txtTipoSuplementos.getText())
+                    .conMarca(txtMarcaSuplementos.getText())
+                    .conPrecio(Double.parseDouble(txtPrecioSuplementos.getText()))
+                    .conStock(Integer.parseInt(txtStockSuplementos.getText()))
+                    .conFechaRegistro(((java.util.Date) fecha.getDate()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                    .build();
+
+            boolean actualizado = suplementoController.actualizarSuplemento(suplementoActualizado);
+
+            if (actualizado) {
+                JOptionPane.showMessageDialog(this, "Suplemento actualizado correctamente.");
+                limpiarCampos();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo actualizar el suplemento.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al actualizar: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_btnEditarSuppleStockActionPerformed
+
     public void limpiarCampos() {
         txtDescripcionSuplementos.setText("");
         txtIDSuplementos.setText("");
@@ -502,7 +534,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     public void actualizarTablaSuplementos() {
         try {
             DefaultTableModel model = (DefaultTableModel) tablaSuplementos.getModel();
-            model.setRowCount(0); 
+            model.setRowCount(0);
 
             ArrayList<SuplementoDTO> lista = suplementoController.obtenerTodos();
 

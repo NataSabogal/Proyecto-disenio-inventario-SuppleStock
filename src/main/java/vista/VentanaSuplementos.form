@@ -264,14 +264,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar &#x2714;"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarSuppleStockActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnEditarSuppleStock">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Editar"/>
+            <Property name="text" type="java.lang.String" value="Editar &#x2699;&#xfe0f;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarSuppleStockActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnBuscarSuppleStock">
           <Properties>
