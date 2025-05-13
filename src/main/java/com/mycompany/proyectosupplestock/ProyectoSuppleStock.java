@@ -4,7 +4,7 @@
 
 package com.mycompany.proyectosupplestock;
 
-import vista.VentanaCrearAdmin;
+import vista.VentanaLogIn;
 
 /**
  *
@@ -13,8 +13,8 @@ import vista.VentanaCrearAdmin;
 public class ProyectoSuppleStock {
 
     public static void main(String[] args) {
-        VentanaCrearAdmin admin = new VentanaCrearAdmin();
-        admin.setVisible(true);
-        admin.setLocationRelativeTo(null);
+        VentanaLogIn login = new VentanaLogIn();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
     }
 }
