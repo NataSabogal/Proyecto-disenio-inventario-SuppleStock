@@ -7,6 +7,8 @@ package controller;
 import dto.SuplementoDTO;
 import java.util.ArrayList;
 import services.SuplementoService;
+import strategy.EstrategiaOrdenamiento;
+import strategy.OrdenadorSuplementos;
 
 /**
  *
@@ -42,5 +44,15 @@ public class SuplementoController {
 
     public ArrayList<SuplementoDTO> obtenerTodos() {
         return suplementoService.obtenerTodos();
+    }
+    
+    public ArrayList<SuplementoDTO> obtenerOrdenados(EstrategiaOrdenamiento estrategia) {
+        ArrayList<SuplementoDTO> lista = suplementoService.obtenerTodos();
+
+        OrdenadorSuplementos ordenador = new OrdenadorSuplementos();
+        ordenador.setEstrategia(estrategia);
+        ordenador.ordenar(lista);
+
+        return lista;
     }
 }

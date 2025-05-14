@@ -21,7 +21,7 @@ public class ConShakerGratis extends PaqueteDecorator {
 
     @Override
     public double getPrecio() {
-        return paquete.getPrecio(); // No aumenta el precio
+        return paquete.getPrecio(); 
     }
 
 }
