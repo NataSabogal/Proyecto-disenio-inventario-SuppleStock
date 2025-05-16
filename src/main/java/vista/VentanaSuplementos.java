@@ -14,6 +14,11 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import strategy.EstrategiaOrdenamiento;
+import strategy.OrdenPorIdAscendente;
+import strategy.OrdenPorMarcaAlfabetica;
+import strategy.OrdenPorPrecioAscendente;
+import strategy.OrdenPorStockDescendente;
 
 
 /**
@@ -567,6 +572,63 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    private void ordenarSuplementos() {
+        String seleccion = cmbOrdenamiento.getSelectedItem().toString();
+
+        EstrategiaOrdenamiento estrategia = null;
+
+        switch (seleccion) {
+            case "Orden original (por ID)":
+                estrategia = new OrdenPorIdAscendente();
+                break;
+            case "Precio Ascendente":
+                estrategia = new OrdenPorPrecioAscendente();
+                break;
+            case "Stock Descendente":
+                estrategia = new OrdenPorStockDescendente();
+                break;
+            case "Marca Alfabética":
+                estrategia = new OrdenPorMarcaAlfabetica();
+                break;
+        }
+         SuplementoController controller = new SuplementoController();
+        ArrayList<SuplementoDTO> listaOrdenada = controller.obtenerOrdenados(estrategia);
+
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new Object[]{"ID", "Nombre", "Descripción", "Tipo", "Marca", "Precio", "Stock", "Fecha de Registro"});
+
+        for (SuplementoDTO sup : listaOrdenada) {
+            modelo.addRow(new Object[]{
+                sup.getId(),
+                sup.getNombre(),
+                sup.getDescripcion(),
+                sup.getTipo(),
+                sup.getMarca(),
+                sup.getPrecio(),
+                sup.getStock(),
+                sup.getFechaRegistro()
+            });
+        }
+
+        tablaSuplementos.setModel(modelo);
+    }
+    
+    private void configurarOrdenamiento() {
+        cmbOrdenamiento.addItem("Orden original (por ID)");
+        cmbOrdenamiento.addItem("Precio Ascendente");
+        cmbOrdenamiento.addItem("Stock Descendente");
+        cmbOrdenamiento.addItem("Marca Alfabética");
+
+        cmbOrdenamiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ordenarSuplementos();
+            }
+        });
+
+        cmbOrdenamiento.setSelectedIndex(0);
+        ordenarSuplementos();
     }
 
  
