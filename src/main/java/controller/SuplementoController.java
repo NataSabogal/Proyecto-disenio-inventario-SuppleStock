@@ -6,6 +6,9 @@ package controller;
 
 import dto.SuplementoDTO;
 import java.util.ArrayList;
+import observer.GestorSuplementosObservable;
+import observer.NotificadorStockBajo;
+import observer.ObservadorSuplemento;
 import services.SuplementoService;
 import strategy.EstrategiaOrdenamiento;
 import strategy.OrdenadorSuplementos;
@@ -17,35 +20,51 @@ import strategy.OrdenadorSuplementos;
 public class SuplementoController {
 
     private final SuplementoService suplementoService;
+    private final GestorSuplementosObservable gestorObservable = new GestorSuplementosObservable();
 
     public SuplementoController() {
         this.suplementoService = new SuplementoService();
+        gestorObservable.agregarObservador(new NotificadorStockBajo());
+        
+
+    }
+
+    public void agregarObservador(ObservadorSuplemento observador) {
+        gestorObservable.agregarObservador(observador);
     }
 
     public boolean registrarSuplemento(SuplementoDTO suplemento) {
-        return suplementoService.guardarSuplemento(suplemento);
-    }
-
-    public ArrayList<SuplementoDTO> obtenerListaSuplementos() {
-        return suplementoService.listarSuplementos();
-    }
-
-    public SuplementoDTO buscarSuplementoPorId(int id) {
-        return suplementoService.buscarPorId(id);
+        boolean registrado = suplementoService.guardarSuplemento(suplemento);
+        if (registrado) {
+            gestorObservable.notificarObservadores(suplemento);
+        }
+        return registrado;
     }
 
     public boolean actualizarSuplemento(SuplementoDTO suplemento) {
-        return suplementoService.actualizarSuplemento(suplemento);
+        boolean actualizado = suplementoService.actualizarSuplemento(suplemento);
+        if (actualizado) {
+            gestorObservable.notificarObservadores(suplemento);
+        }
+        return actualizado;
     }
 
     public boolean eliminarSuplemento(int id) {
         return suplementoService.eliminarSuplemento(id);
     }
 
+    public SuplementoDTO buscarSuplementoPorId(int id) {
+        return suplementoService.buscarPorId(id);
+    }
+
+    public ArrayList<SuplementoDTO> obtenerListaSuplementos() {
+        return suplementoService.listarSuplementos();
+    }
+
     public ArrayList<SuplementoDTO> obtenerTodos() {
         return suplementoService.obtenerTodos();
     }
-    
+
     public ArrayList<SuplementoDTO> obtenerOrdenados(EstrategiaOrdenamiento estrategia) {
         ArrayList<SuplementoDTO> lista = suplementoService.obtenerTodos();
 
