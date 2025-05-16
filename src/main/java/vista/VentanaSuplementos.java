@@ -14,12 +14,12 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import observer.LogVisualStockBajo;
 import strategy.EstrategiaOrdenamiento;
 import strategy.OrdenPorIdAscendente;
 import strategy.OrdenPorMarcaAlfabetica;
 import strategy.OrdenPorPrecioAscendente;
 import strategy.OrdenPorStockDescendente;
-
 
 /**
  *
@@ -41,6 +41,10 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         ));
 
         actualizarTablaSuplementos();
+        configurarOrdenamiento();
+
+        LogVisualStockBajo logVisual = new LogVisualStockBajo(txtLogStock);
+        suplementoController.agregarObservador(logVisual);
     }
 
     /**
@@ -79,6 +83,9 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaSuplementos = new javax.swing.JTable();
         cmbOrdenamiento = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtLogStock = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         btnVerPromocion = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -108,6 +115,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         jLabel8.setText("Fecha");
 
         btnAgregarSuppleStock.setText("Agregar ✔");
+        btnAgregarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarSuppleStockActionPerformed(evt);
+            }
+        });
 
         btnEditarSuppleStock.setText("Editar ⚙️");
         btnEditarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +136,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         });
 
         btnAtrasSuppleStock.setText("Atras 🔙 ");
+        btnAtrasSuppleStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasSuppleStockActionPerformed(evt);
+            }
+        });
 
         btnEliminarSuppleStock.setText("Eliminar 🆑");
         btnEliminarSuppleStock.addActionListener(new java.awt.event.ActionListener() {
@@ -223,7 +240,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addGap(18, 44, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscarSuppleStock)
                     .addComponent(btnEditarSuppleStock)
@@ -249,17 +266,32 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaSuplementos);
 
+        txtLogStock.setColumns(20);
+        txtLogStock.setRows(5);
+        jScrollPane2.setViewportView(txtLogStock);
+
+        jLabel11.setText("Advertencia de Stock:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(cmbOrdenamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(cmbOrdenamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(15, 15, 15))
         );
         jPanel2Layout.setVerticalGroup(
@@ -269,7 +301,11 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
                 .addComponent(cmbOrdenamiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -299,10 +335,10 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                     .addComponent(jLabel9)
                     .addComponent(jLabel10))
                 .addGap(75, 75, 75)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtDescipc)
-                    .addComponent(txtPrecioFinal, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPrecioFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescipc, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -341,8 +377,8 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -473,6 +509,13 @@ public class VentanaSuplementos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnEditarSuppleStockActionPerformed
 
+    private void btnAtrasSuppleStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasSuppleStockActionPerformed
+        VentanaLogIn login = new VentanaLogIn();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
+        this.dispose();
+    }//GEN-LAST:event_btnAtrasSuppleStockActionPerformed
+
     public void limpiarCampos() {
         txtDescripcionSuplementos.setText("");
         txtIDSuplementos.setText("");
@@ -593,7 +636,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
                 estrategia = new OrdenPorMarcaAlfabetica();
                 break;
         }
-         SuplementoController controller = new SuplementoController();
+        SuplementoController controller = new SuplementoController();
         ArrayList<SuplementoDTO> listaOrdenada = controller.obtenerOrdenados(estrategia);
 
         DefaultTableModel modelo = new DefaultTableModel();
@@ -614,7 +657,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
 
         tablaSuplementos.setModel(modelo);
     }
-    
+
     private void configurarOrdenamiento() {
         cmbOrdenamiento.addItem("Orden original (por ID)");
         cmbOrdenamiento.addItem("Precio Ascendente");
@@ -631,7 +674,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
         ordenarSuplementos();
     }
 
- 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarSuppleStock;
     private javax.swing.JButton btnAtrasSuppleStock;
@@ -644,6 +687,7 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -656,10 +700,12 @@ public class VentanaSuplementos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tablaSuplementos;
     private javax.swing.JTextField txtDescipc;
     private javax.swing.JTextField txtDescripcionSuplementos;
     private javax.swing.JTextField txtIDSuplementos;
+    private javax.swing.JTextArea txtLogStock;
     private javax.swing.JTextField txtMarcaSuplementos;
     private javax.swing.JTextField txtNombreSuplementos;
     private javax.swing.JTextField txtPrecioFinal;
