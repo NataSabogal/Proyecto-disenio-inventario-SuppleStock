@@ -4,6 +4,8 @@
 
 package com.mycompany.proyectosupplestock;
 
+import vista.VentanaLogIn;
+
 /**
  *
  * @author nataliasabogalrada
@@ -11,6 +13,8 @@ package com.mycompany.proyectosupplestock;
 public class ProyectoSuppleStock {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        VentanaLogIn login = new VentanaLogIn();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null);
     }
 }

@@ -17,6 +17,7 @@ public class DatabaseConfig {
 
     private static DatabaseConfig instance;
     private Connection connection;
+    
     private final String URL;
     private final String USER;
     private final String PASSWORD;
@@ -51,7 +52,6 @@ public class DatabaseConfig {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Conexión cerrada exitosamente.");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -61,7 +61,6 @@ public class DatabaseConfig {
     private void connect() {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión a la base de datos exitosa.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
